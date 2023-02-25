@@ -40,6 +40,17 @@ grid6 = [
                 [0, 0, 1, 0, 0, 0],
                 [0, 5, 0, 0, 6, 4]]
 
+grid7 = [
+		[6, 1, 9, 8, 4, 2, 5, 3, 7,],
+		[7, 0, 5, 3, 6, 9, 1, 8, 2,],
+		[8, 3, 2, 1, 7, 5, 0, 0, 9,],
+		[1, 5, 8, 6, 9, 7, 3, 2, 4,],
+		[0, 6, 4, 2, 0, 1, 8, 7, 5,],
+		[2, 0, 3, 0, 8, 4, 6, 9, 1,],
+		[4, 0, 7, 9, 5, 6, 2, 0, 3,],
+		[3, 9, 1, 4, 0, 0, 7, 5, 6,],
+		[5, 2, 0, 7, 1, 3, 9, 4, 8,]]
+
 grids = [(grid1, 2, 2), (grid2, 2, 2), (grid3, 2, 2), (grid4, 2, 2), (grid5, 2, 2)]
 '''
 ===================================
@@ -100,6 +111,7 @@ def check_solution(grid, n_rows, n_cols):
 def recursive_solve(grid, n_rows, n_cols):
 
         def dup_check(grid, n_rows, n_cols, location, i):
+                #function to check for duplicate in row column reduce redundant tests
                 if i in grid[location[0]]:
                         return False
                 column_list = []
@@ -114,11 +126,13 @@ def recursive_solve(grid, n_rows, n_cols):
         
         temp_grid = grid
 
+        #check if grid full, therefore check if solution found
         if not any(0 in sublist for sublist in grid):
                 if check_solution(grid, n_rows, n_cols):
                         return grid
                 return False
-        
+
+        #locate first empty cell
         row = 0
         index_found = False
         while not index_found:
@@ -128,11 +142,11 @@ def recursive_solve(grid, n_rows, n_cols):
                         index_found = True
                 row += 1
 
-        for i in range(1,n+1):
 
+        for i in range(1,n+1):
                 # check for duplicates in row/column to avoid redundant tests - without massively increases time
                 if dup_check(grid, n_rows, n_cols, location, i):
-                
+                        #update temp_grid with the new value
                         temp_grid[location[0]][location[1]] = i
                         attempt = recursive_solve(temp_grid, n_rows, n_cols)
                         if attempt:
